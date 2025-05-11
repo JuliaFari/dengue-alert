@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapeamento</title>
+  <link rel="stylesheet" href="mapeamento.css">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" href="./assets/mosq1.ico" type="image/x-icon">
+</head>
+  <script>
+    function selecionarBotao(botao, faixa) {
+    document.querySelectorAll('.botao-faixa').forEach(b => {
+      b.classList.remove('selecionado');
+      b.style.backgroundColor = '';
+    });
+    botao.classList.add('selecionado');
+    botao.style.backgroundColor = '#305831';
+    faixaSelecionada = faixa;
+  }
+
+  document.getElementById('form-dengue').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const rua = document.getElementById('rua-principal').value.trim();
+    
+    if (!rua || !faixaSelecionada) {
+      alert('Preencha todos os campos obrigatórios!');
+      return;
+    }
+    
+    registrosDengue.push({
+      data: new Date().toLocaleString('pt-BR'),
+      rua: rua,
+      faixa: faixaSelecionada
+    });
+    
+    localStorage.setItem('dadosDengue', JSON.stringify(registrosDengue));
+    window.location.href = 'obrigada.html';
+  });
+</script>
+<body>
+  <nav>
+    <a href="#" class="logo">
+      <img src="./assets/logo.png" alt="Logo" style="height: 40px; vertical-align: middle;">
+      DENGUE ALERT
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="mapeamento.html">Mapeamento</a>
+      <a href="sobre.html">Sobre</a>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <h1>MAPEAMENTO DE FOCOS</h1>
+    <h2>Carlos Chagas - MG</h2>
+    
+    <main>
+      <form id="form-dengue">
+        <div class="selecionar-rua">
+          <label for="rua-principal">Digite o nome da sua rua:</label>
+          <input type="text" id="rua-principal" placeholder="Ex: Rua das Flores" required>
+        </div>
+        
+        <div class="pergunta-numero">
+          <h3>Em qual das opções o número da sua casa se encaixa?</h3>
+          <div class="grupo-botoes">
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '01 a 50')">01 a 50</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '51 a 100')">51 a 100</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '101 a 150')">101 a 150</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '151 a 200')">151 a 200</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '201 a 250')">201 a 250</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '251 a 300')">251 a 300</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '301 a 350')">301 a 350</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '351 a 400')">351 a 400</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '401 a 450')">401 a 450</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '451 a 500')">451 a 500</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '501 a 550')">501 a 550</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '551 a 600')">551 a 600</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '601 a 650')">601 a 650</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '651 a 700')">651 a 700</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '701 a 750')">701 a 750</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '751 a 800')">751 a 800</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '801 a 850')">801 a 850</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '851 a 900')">851 a 900</button>
+            <button type="button" class="botao-faixa" onclick="selecionarBotao(this, '901 a 950')">901 a 950</button>
+          </div>
+        </div>
+        
+        <input type="hidden" id="faixa-selecionada">
+        <button type="submit" class="btn-enviar">Enviar Relatório</button>
+      </form>
+      
+      <div id="contador"></div>
+      <button class="botao-voltar">
+        <i class="fas fa-arrow-left"></i> Voltar
+      </button>
+    </main>
+  </div>
+
+  <script>
+    let registrosDengue = JSON.parse(localStorage.getItem('dadosDengue')) || [];
+    let faixaSelecionada = null;
+
+    function selecionarBotao(botao, faixa) {
+      const botoes = document.querySelectorAll('.botao-faixa');
+      botoes.forEach(b => b.classList.remove('selecionado'));
+      botao.classList.add('selecionado');
+      faixaSelecionada = faixa;
+      document.getElementById('faixa-selecionada').value = faixa;
+    }
+
+    document.getElementById('form-dengue').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const rua = document.getElementById('rua-principal').value;
+      
+      if (!rua || !faixaSelecionada) {
+        alert('Por favor, preencha o nome da rua e selecione uma faixa numérica.');
+        return;
+      }
+      
+      registrosDengue.push({
+        data: new Date().toLocaleString('pt-BR'),
+        rua: rua,
+        faixa: faixaSelecionada
+      });
+      
+      localStorage.setItem('dadosDengue', JSON.stringify(registrosDengue));
+      atualizarContador();
+      window.location.href = 'obrigada.html';
+    });
+
+        function atualizarContador() {
+          const contador = document.getElementById('contador');
+          contador.textContent = `Relatórios salvos: ${registrosDengue.length}`;
+          contador.style.fontSize = '18px';
+          contador.style.fontWeight = 'bold';
+          contador.style.color = '#305831';
+          contador.style.marginTop = '20px';
+          contador.style.textAlign = 'center';
+        }
+    document.addEventListener('DOMContentLoaded', atualizarContador);
+
+    document.querySelector('.botao-voltar').addEventListener('click', function() {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
